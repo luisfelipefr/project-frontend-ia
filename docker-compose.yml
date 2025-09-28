@@ -1,0 +1,27 @@
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
+    ports:
+      - "4173:4173"
+    restart: unless-stopped
+
+  frontend-dev:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "4173:4173"
+    profiles:
+      - dev
