@@ -56,6 +56,6 @@ Durante o desenvolvimento, utilizei Inteligência Artificial (Codex) como ferram
 - **Geração e refino de código**: a IA auxiliou na criação do modal controlado de produtos, implementando validações de campos, limitação de caracteres e integração com a API de forma mais rápida e estruturada.
 - **Integração entre componentes**: contribuiu para conectar o Dashboard ao Modal, garantindo abertura controlada, e o reaproveitamento do cliente Axios já existente.
 - **Resolução de erros e ajustes de configuração**: todos os problemas mais comuns de configuração durante o desenvolvimento foram solucionados com auxílio da IA, acelerando o processo e garantindo estabilidade na aplicação.
-- **Documentação e automação**: gerou instruções para o build Docker multi-stage, revisou scripts de execução e auxiliou na redação deste README, com foco em clareza e organização.
+- **Documentação e automação**: gerou instruções para o build Docker multi-stage, auxiliou na construção do docker-compose, revisou scripts de execução e ajudou na criação deste README, priorizando clareza e organização.
 
 Todas as sugestões geradas foram revisadas, testadas e adaptadas manualmente, assegurando que o resultado final estivesse alinhado aos requisitos do projeto e às boas práticas de desenvolvimento.
