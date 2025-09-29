@@ -1,37 +1,29 @@
 import { useEffect, useState } from 'react'
 import api from '../services/api'
 import { useAuth } from '../context/AuthContext'
-import { Trash } from 'lucide-react';
+import { Trash } from 'lucide-react'
+import { Modal } from '../components/Modal'
 
-type products = { id: number; name: string; price: number; description?: string; quantity?: number }
+type Product = { id: number; name: string; price: number; description?: string; quantity?: number }
 
 export default function Dashboard() {
   const { user, logout } = useAuth()
 
-  const [products, setProducts] = useState<products[]>([])
+  const [products, setProducts] = useState<Product[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     api.get('/products').then(r => setProducts(r.data))
   }, [])
 
-  async function addProduct() {
-    try {
-      const { data } = await api.post("/products", {
-        name: "Produto teste",
-        price: 99.90,
-        description: "Descrição do produto teste",
-        quantity: 10
-      });
-      setProducts([...products, data]); // adiciona o novo produto no estado
-    } catch (err) {
-      console.error(err);
-    }
+  function handleProductCreated(product: Product) {
+    setProducts((prevProducts) => [...prevProducts, product])
   }
 
   async function deleteProduct(id: number) {
     try {
-      await api.delete(`/products/${id}`);
-      setProducts((products) => products.filter((p) => p.id !== id));
+      await api.delete(`/products/${id}`)
+      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id))
     } catch (err) {
       console.error(err)
     }
@@ -50,31 +42,38 @@ export default function Dashboard() {
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-8">
-        <div className='flex justify-between mb-10'>
+        <div className="flex justify-between mb-10">
           <h2 className="text-2xl font-medium self-center">Produtos</h2>
-          <button onClick={addProduct} 
-          className=" mb-4 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-indigo-500 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="mb-4 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-indigo-500 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110"
           >
             Adicionar Produto
           </button>
         </div>
-        
+
         <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {products.map(p => (
-            <li key={p.name} className="rounded-xl bg-white border border-slate-200 p-4">
-              <div className='flex justify-between'>
-                <h3 className="font-semibold self-center">{p.name}</h3>
-                  <button onClick={() => deleteProduct(p.id)} className='text-red-600 hover:text-red-900 transition delay-150 duration-300 ease-in-out'>
-                    <Trash/>
-                  </button>
+            <li key={p.id} className="rounded-xl bg-white border border-slate-200 p-4">
+              <div className="flex justify-between">
+                <h3 className="font-semibold self-center break-all">{p.name}</h3>
+                <button onClick={() => deleteProduct(p.id)} className="text-red-600 hover:text-red-900 transition delay-150 duration-300 ease-in-out ml-3">
+                  <Trash />
+                </button>
               </div>
-              <p className="text-sm text-slate-800 mb-2 mt-3">{p.description}</p>
+              <p className="text-sm text-slate-800 mb-2 mt-3 break-all">{p.description || 'Sem descricao'}</p>
               <p className="font-medium mb-1">R$ {p.price}</p>
-              <p className="text-sm text-slate-600">Quantidade: {p.quantity}</p>
+              <p className="text-sm text-slate-600">Quantidade: {p.quantity ?? 0}</p>
             </li>
           ))}
         </ul>
       </main>
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onProductCreated={handleProductCreated}
+      />
     </div>
   )
 }

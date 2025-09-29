@@ -35,5 +35,6 @@ docker compose up --build frontend
 - `src/services/api.ts` - cliente Axios configurado com interceptadores de token
 - `src/context/AuthContext.tsx` - gerenciamento de sessão e persistência do JWT
 - `src/components/ProtectedRoute.tsx` - proteção de rotas autenticadas
+- `src/components/Modal.tsx` - formulário para adicionar novos produtos
 - `src/pages/Login.tsx` - tela de login que consome a API de autenticação
 - `src/pages/Dashboard.tsx` - formulário e listagem de produtos integrados à API
